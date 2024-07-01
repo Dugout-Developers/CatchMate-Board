@@ -47,7 +47,6 @@ jobs:
 
       # docker build & push to production
       - name: Docker build & push to prod
-        if: contains(github.ref, 'main')
         run: |
           docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t ${{ secrets.DOCKER_USER }}/catchmate-board .
