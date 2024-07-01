@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.catchmate.board.mapper.BoardMapper">
+    <resultMap id="boardResultMap" type="com.catchmate.board.entity.Board">
+        <id property="boardId" column="board_id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="getBoardById" resultMap="boardResultMap">
+        SELECT * FROM board WHERE board_id = #{boardId}
+    </select>
+
+    <select id="getAllTitles">
+        SELECT TITLE FROM board;
+    </select>
+</mapper>
