@@ -63,7 +63,7 @@ jobs:
         id: deploy-prod
         with:
           host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
-          username: ubuntu
+          username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
