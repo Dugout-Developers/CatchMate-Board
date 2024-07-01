@@ -59,15 +59,16 @@ jobs:
 
     steps:
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: appleboy/ssh-action@master
+        id: deploy-prod
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Deploy to RHEL9 server
-        run: |
-          ssh ec2-user@15.164.77.154 << 'EOF'
-          podman pull ${{ secrets.DOCKER_USER }}/catchmate-board:latest
-          podman stop catchmate-board || true
-          podman rm catchmate-board || true
-          podman run -d --name catchmate-board -p 8080:8080 ${{ secrets.DOCKER_USER }}/catchmate-board:latest
-          EOF
+          host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            sudo podman pull ${{ secrets.DOCKER_USER }}/catchmate-board:latest
+            sudo podman stop catchmate-board || true
+            sudo podman rm catchmate-board || true
+            sudo podman run -d --name catchmate-board -p 8080:8080 ${{ secrets.DOCKER_USER }}/catchmate-board:latest
+         
