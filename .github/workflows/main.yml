@@ -67,7 +67,13 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo podman pull ${{ secrets.DOCKER_USER }}/catchmate-board:latest
-            sudo podman stop catchmate-board || true
-            sudo podman rm catchmate-board || true
+
+            if podman ps -a --format '{{.Names}}' | grep -Eq "^catchmate-board\$"; then
+              sudo podman stop catchmate-board
+              sudo podman rm catchmate-board
+            else
+              echo "Container catchmate-board does not exist, skipping stop and remove."
+            fi
+            
             sudo podman run -d --name catchmate-board -p 8080:8080 ${{ secrets.DOCKER_USER }}/catchmate-board:latest
          
